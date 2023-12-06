@@ -1,0 +1,44 @@
+<form (ngSubmit)="submitForm()" #form="ngForm">
+
+<div>username</div>
+  <input type="text" name="username" ngModel id="username" required><br>
+  <div *ngIf="form.submitted && form.controls['username'].errors">
+    <div *ngIf="form.controls['username'].errors['required']">username is required.</div>
+  </div>
+
+<div>email</div>
+  <input type="email" name="email" ngModel id="email" required email><br>
+  <div *ngIf="form.submitted && form.controls['email'].errors">
+    <div *ngIf="form.controls['email'].errors['required']">Email is required.</div>
+    <div *ngIf="form.controls['email'].errors['email']">Email is not valid.</div>
+  </div>
+
+  <p>Programming Languages</p>
+
+  <input type="checkbox" name="java" (change)="onCheckboxChange($event)"> Java
+  <input type="checkbox" name="python" (change)="onCheckboxChange($event)"> Python
+  <input type="checkbox" name="javascipt" (change)="onCheckboxChange($event)"> Java
+  <input type="checkbox" name="c++" (change)="onCheckboxChange($event)"> Python
+
+  <p>Experience prog:</p>
+  <label *ngFor="let prog of bardoxetalaba">
+    <input type="radio" name="experience" ngModel [value]="prog">{{ prog }}
+  </label>
+  <div *ngIf="form.submitted && !form.controls['experience'].value">Select an experience prog.</div>
+
+  <label for="description">Project Description:</label><br>
+  <textarea name="description" ngModel [(ngModel)]="textarea" (input)="checkLength()"></textarea><br>
+  <div *ngIf="form.submitted && textarea.length < 10">Project description must be at least 10 characters long.</div>
+
+  <button type="submit" [disabled]="!form.valid || (!javaChecked && !pythonChecked && !cChecked && !!javacriptChecked) || checkLength()">Submit</button>
+
+</form>
+
+<div *ngIf="submit">
+  <h3>Congratulations {{ form.value.username }}!</h3>
+  <div [ngSwitch]="form.controls['experience'].value?.toLowerCase()">
+    <div *ngSwitchCase="'beginner'"> <p>Your programming skills are good.  Keep up the great work!</p></div>
+    <div *ngSwitchCase="'intermediate'"><p>Your programming skills are intermediate.  Keep up the great work!</p></div>
+    <div *ngSwitchCase="'advanced'"><p>Your programming skills are impresive.  Keep up the great work!</p></div>
+  </div>
+</div>
